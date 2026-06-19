@@ -218,10 +218,23 @@ function applyLocalAuth() {
                     <svg class="icon" aria-hidden="true" style="width:48px;height:48px;color:var(--brand-bronze);margin-bottom:1rem;"><use href="./assets/icons/phosphor-sprite.svg#ph-file-pdf"></use></svg>
                     <h3 style="margin-bottom:0.5rem">Full Report Available</h3>
                     <p style="margin-bottom:1.5rem">You have subscriber access to view this complete report.</p>
-                    <a class="btn btn-navy" href="#" onclick="alert('This is a mock PDF download in the demo environment.'); return false;">Download PDF Report</a>
+                    <button class="btn btn-navy mock-download-btn">Download PDF Report</button>
+                    <p class="mock-download-msg notice notice-success" style="display:none; margin-top:1rem;">Report Downloaded Successfully!</p>
                 </div>
             `;
             article.appendChild(unlockDiv);
+            
+            // Handle mock download
+            const btn = unlockDiv.querySelector('.mock-download-btn');
+            const msg = unlockDiv.querySelector('.mock-download-msg');
+            btn.addEventListener('click', () => {
+                btn.textContent = 'Downloading...';
+                btn.disabled = true;
+                setTimeout(() => {
+                    btn.style.display = 'none';
+                    msg.style.display = 'block';
+                }, 800);
+            });
         }
     }
   } else {
@@ -243,6 +256,24 @@ function initSheets() {
   $('[data-sheet-close]')?.addEventListener('click', () => $('.bottom-sheet')?.classList.remove('open'));
 }
 
+/** Makes report cards clickable to their detail page */
+function initReportCards() {
+  $$('.report-card').forEach(card => {
+    // Make cursor a pointer if it has a report link
+    const link = card.querySelector('a[href*="report.html"]');
+    if (link) {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', (e) => {
+        // Prevent navigating if they clicked a specific inner button/link (like Access/Subscribe)
+        if (e.target.tagName === 'A' || e.target.closest('a') || e.target.tagName === 'BUTTON') {
+            return; 
+        }
+        window.location.href = link.href;
+      });
+    }
+  });
+}
+
 /** Adds mobile labels to responsive table cells from their header text. */
 function applyResponsiveTableLabels(root = document) {
   $$('table', root).forEach((table) => {
@@ -259,5 +290,5 @@ function applyResponsiveTableLabels(root = document) {
 window.applyResponsiveTableLabels = applyResponsiveTableLabels;
 
 document.addEventListener('DOMContentLoaded', () => {
-  initNav(); initDrawer(); initAdminMenu(); initHero(); initTabs(); initAccount(); initLogoutLinks(); initAjaxForms(); initSheets(); applyResponsiveTableLabels();
+  initNav(); initDrawer(); initAdminMenu(); initHero(); initTabs(); initAccount(); initLogoutLinks(); initAjaxForms(); initSheets(); initReportCards(); applyResponsiveTableLabels();
 });
