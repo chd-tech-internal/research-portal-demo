@@ -191,6 +191,10 @@ function initAjaxForms() {
 function applyLocalAuth() {
   const role = localStorage.getItem('auth_role');
   if (role) {
+    if (window.location.pathname.endsWith('analytics.html')) {
+      window.location.href = './analytics-full.html';
+      return;
+    }
     document.querySelectorAll('a[href="./login.html"]').forEach(el => {
       el.textContent = 'LOGOUT';
       el.href = '#';
@@ -202,6 +206,11 @@ function applyLocalAuth() {
     });
     document.querySelectorAll('.locked-panel').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.report-card.locked').forEach(el => el.classList.remove('locked'));
+  } else {
+    if (window.location.pathname.endsWith('analytics-full.html')) {
+      window.location.href = './analytics.html';
+      return;
+    }
   }
 }
 window.addEventListener('DOMContentLoaded', applyLocalAuth);
