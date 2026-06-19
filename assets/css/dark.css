@@ -1,0 +1,18 @@
+.theme-dark{background:var(--chd-navy-ui);color:#fff}
+.theme-dark .section{background:var(--chd-navy-ui);color:#fff}
+.theme-dark .panel{background:rgba(255,255,255,.04);border-color:var(--border-dark);box-shadow:none}
+.theme-dark .report-card{background:rgba(255,255,255,.04);border-color:var(--border-dark);box-shadow:none}
+.theme-dark .report-card p,.theme-dark .report-byline{color:rgba(255,255,255,.68)}
+.theme-dark input,.theme-dark select,.theme-dark textarea{background:rgba(255,255,255,.06);color:#fff;border-color:var(--border-dark)}
+.theme-dark .notice,.admin-shell .notice{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-md);padding:12px 20px;font-size:12px;color:rgba(255,255,255,.45);letter-spacing:.02em;box-shadow:none}
+.theme-dark .locked-panel{background:rgba(255,255,255,.05);border-color:rgba(185,114,49,.34)}
+.theme-dark .sticky-col,.admin-shell .sticky-col{background:var(--chd-navy-ui)}
+.admin-shell .panel,.admin-shell .subscription-card,.admin-shell .report-card,.admin-shell .tile{background:rgba(255,255,255,.04);border-color:var(--border-dark);box-shadow:none;color:#fff}
+.admin-shell input,.admin-shell select,.admin-shell textarea{background:rgba(255,255,255,.06);color:#fff;border-color:var(--border-dark)}
+.admin-shell .btn-navy{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);color:#fff}
+.admin-shell .table-wrap{border-color:var(--border-dark)}
+.admin-shell th,.admin-shell td{border-bottom-color:rgba(255,255,255,.08)}
+.admin-shell .success-box{background:rgba(25,135,84,.12);border-color:rgba(25,135,84,.36);color:#c8f1d8}
+.admin-shell .status-active{background:rgba(25,135,84,.18);color:#75d69a}
+.admin-shell .status-pending{background:rgba(255,193,7,.16);color:#f1c96a}
+.admin-shell .status-expired{background:rgba(224,82,82,.16);color:#ff8a8a}

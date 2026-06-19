@@ -1,0 +1,4 @@
+.theme-light{background:var(--chd-off-white);color:var(--chd-navy)}
+.theme-light main{background:var(--chd-off-white)}
+.theme-light .section:nth-of-type(even){background:#fff}
+.theme-light .section.dark-band{background:var(--chd-navy);color:#fff}
