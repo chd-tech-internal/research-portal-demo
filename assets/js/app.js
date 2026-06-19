@@ -195,7 +195,7 @@ function applyLocalAuth() {
       window.location.href = './analytics-full.html';
       return;
     }
-    document.querySelectorAll('a[href="./login.html"]').forEach(el => {
+    document.querySelectorAll('a[href="./login.html"], a[href*="login.php"]').forEach(el => {
       el.textContent = 'LOGOUT';
       el.href = '#';
       el.addEventListener('click', (e) => {
@@ -206,11 +206,33 @@ function applyLocalAuth() {
     });
     document.querySelectorAll('.locked-panel').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.report-card.locked').forEach(el => el.classList.remove('locked'));
+    
+    // Inject mock report content if on report page
+    if (window.location.pathname.endsWith('report.html')) {
+        const article = document.querySelector('.report-detail');
+        if (article && !document.querySelector('.unlocked-mock-content')) {
+            const unlockDiv = document.createElement('div');
+            unlockDiv.className = 'unlocked-mock-content';
+            unlockDiv.innerHTML = `
+                <div style="margin-top:2rem; padding:2rem; background: var(--surface-2); border-radius: var(--radius-lg); text-align: center;">
+                    <svg class="icon" aria-hidden="true" style="width:48px;height:48px;color:var(--brand-bronze);margin-bottom:1rem;"><use href="./assets/icons/phosphor-sprite.svg#ph-file-pdf"></use></svg>
+                    <h3 style="margin-bottom:0.5rem">Full Report Available</h3>
+                    <p style="margin-bottom:1.5rem">You have subscriber access to view this complete report.</p>
+                    <a class="btn btn-navy" href="#" onclick="alert('This is a mock PDF download in the demo environment.'); return false;">Download PDF Report</a>
+                </div>
+            `;
+            article.appendChild(unlockDiv);
+        }
+    }
   } else {
     if (window.location.pathname.endsWith('analytics-full.html')) {
       window.location.href = './analytics.html';
       return;
     }
+    // Fix any login.php links to point to login.html
+    document.querySelectorAll('a[href*="login.php"]').forEach(el => {
+        el.href = './login.html';
+    });
   }
 }
 window.addEventListener('DOMContentLoaded', applyLocalAuth);
