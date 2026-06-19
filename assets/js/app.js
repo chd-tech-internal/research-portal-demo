@@ -127,14 +127,12 @@ function initLogoutLinks() {
   });
 }
 
-/** Wires AJAX forms with inline success messages. */
+/** Wires AJAX forms with inline success messages and mock authentication. */
 function initAjaxForms() {
   $$('form[data-ajax]').forEach((form) => {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       const submitter = event.submitter || form.querySelector('button[type="submit"], input[type="submit"]');
-      const confirmMessage = submitter?.dataset.confirm || form.dataset.confirm;
-      if (confirmMessage && !window.confirm(confirmMessage)) return;
       let messageBox = $('[data-form-message]', form);
       const ensureMessageBox = () => {
         if (!messageBox) {
@@ -153,36 +151,60 @@ function initAjaxForms() {
         submitter.disabled = true;
         submitter.textContent = isLogin ? 'Signing in...' : 'Working...';
       }
-      try {
-        const body = submitter ? new FormData(form, submitter) : new FormData(form);
-        const response = await fetch(endpoint, { method: 'POST', body, credentials: 'same-origin' });
-        const contentType = response.headers.get('content-type') || '';
-        if (response.redirected && !contentType.includes('application/json')) {
-          window.location.href = response.url;
-          return;
-        }
-        const data = await response.json().catch(() => ({ ok: false, error: 'We could not complete this action. Please check your input and try again.' }));
-        if (data.ok && data.data.redirect) {
-          window.location.href = data.data.redirect;
-          return;
-        }
+      
+      const body = submitter ? new FormData(form, submitter) : new FormData(form);
+      
+      if (isLogin) {
+        const email = body.get('email');
+        const password = body.get('password');
+        setTimeout(() => {
+          if ((email === 'subscriber.local@chd.test' && password === 'SubscriberLocal123!') ||
+              (email === 'admin.local@chd.test' && password === 'AdminLocal123!')) {
+            localStorage.setItem('auth_role', email.includes('admin') ? 'admin' : 'subscriber');
+            window.location.href = './reports.html';
+          } else {
+            messageBox = ensureMessageBox();
+            messageBox.className = 'notice notice-error login-message';
+            messageBox.textContent = 'Invalid email or password.';
+            if (submitter) {
+              submitter.disabled = false;
+              submitter.textContent = originalLabel;
+            }
+          }
+        }, 500);
+        return;
+      }
+      
+      setTimeout(() => {
         messageBox = ensureMessageBox();
-        messageBox.className = data.ok ? 'notice notice-success login-message' : 'notice notice-error login-message';
-        messageBox.textContent = data.ok ? (data.data.message || 'Thank you. A member of our team will be in touch shortly.') : (data.error || 'We could not complete this action. Please check your input and try again.');
-        if (data.ok && data.data.replace) form.innerHTML = data.data.replace;
-      } catch (error) {
-        messageBox = ensureMessageBox();
-        messageBox.className = 'notice notice-error login-message';
-        messageBox.textContent = 'We could not complete this action. Please check your input and try again.';
-      } finally {
-        if (submitter && document.body.contains(submitter)) {
+        messageBox.className = 'notice notice-success login-message';
+        messageBox.textContent = 'Thank you. A member of our team will be in touch shortly.';
+        if (submitter) {
           submitter.disabled = false;
           submitter.textContent = originalLabel;
         }
-      }
+      }, 500);
     });
   });
 }
+
+function applyLocalAuth() {
+  const role = localStorage.getItem('auth_role');
+  if (role) {
+    document.querySelectorAll('a[href="./login.html"]').forEach(el => {
+      el.textContent = 'LOGOUT';
+      el.href = '#';
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.removeItem('auth_role');
+        window.location.href = './';
+      });
+    });
+    document.querySelectorAll('.locked-panel').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.report-card.locked').forEach(el => el.classList.remove('locked'));
+  }
+}
+window.addEventListener('DOMContentLoaded', applyLocalAuth);
 
 /** Wires mobile filter bottom sheets. */
 function initSheets() {

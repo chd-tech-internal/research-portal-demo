@@ -1,6 +1,6 @@
-@font-face{font-family:"Playfair Display";src:url("/assets/fonts/playfair-display.ttf") format("truetype");font-weight:400 900;font-style:normal;font-display:swap}
-@font-face{font-family:"Calibri";src:url("/assets/fonts/calibri.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:"IBM Plex Mono";src:url("/assets/fonts/ibm-plex-mono.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Playfair Display";src:url("../fonts/playfair-display.ttf") format("truetype");font-weight:400 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Calibri";src:url("../fonts/calibri.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("../fonts/ibm-plex-mono.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
 :root{
   --chd-navy:#102530;--chd-bronze:#B97231;--chd-navy-ui:#102530;--chd-bronze-ui:#B97231;--chd-navy-mid:#102430;--chd-bronze-soft:#C5A485;--chd-grey:#B6B6B6;--chd-white:#FFFFFF;--chd-off-white:#F5F3EF;--chd-black:#0A0A0A;
   --text-xs:11px;--text-sm:13px;--text-base:15px;--text-md:17px;--text-lg:22px;--text-xl:28px;--text-2xl:36px;--text-3xl:48px;--text-hero:56px;
